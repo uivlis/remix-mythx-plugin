@@ -234,6 +234,19 @@ class Login extends Component {
             results = <p></p>;
         }
 
+        let login;
+
+        if (this.state.loginState === "Login successful"){
+            login = <div className="row" id="activateSection">
+                        <button type="button" onClick={this.activate} id="activate">{this.state.buttonValue}</button>
+                        <div id="activateRes">
+                            {results}
+                        </div>
+                    </div> 
+        } else {
+            login = <p></p>;
+        }
+
       return (
         <div className="container">
             <div className="row">
@@ -256,18 +269,7 @@ class Login extends Component {
                 <button type="button" onClick={this.login} id="login">LogIn</button>
                 <label id="loginRes">{this.state.loginState}</label>
             </div>
-            {
-                this.state.loginState === "Login successful" ? 
-                    <div className="row" id="activateSection">
-                        <button type="button" onClick={this.activate} id="activate">{this.state.buttonValue}</button>
-                        <div id="activateRes">
-                            {results}
-                        </div>
-                    </div> 
-                    : 
-                    <p></p> 
-            }
-            
+            {login}
         </div>
       );
     }
