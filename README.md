@@ -4,6 +4,6 @@ Go to Remix IDE and type the following JSON in the Setting tab to load the plugi
 ```
 {
     "title":"remix-mythx-plugin",
-    "url":"https://remix-mythx-plugin.herokuapp.com/"
+    "url":"https://remix-mythx-plugin.herokuapp.com"
 }
 ```
