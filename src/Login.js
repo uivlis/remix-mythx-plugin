@@ -225,7 +225,7 @@ class Login extends Component {
                 key: "editor",
                 type: "discardHighlight",
                 value: []
-            }), "*");
+            }), "https://remix-mythx-plugin.herokuapp.com/");
         }
       }
         
