@@ -73,8 +73,8 @@ class Login extends Component {
                         "content-type": "application/json"
                     },
                     body: JSON.stringify({
-                        "accessToken": self.jwt.access,
-                        "refreshToken": self.jwt.refresh
+                        "accessToken": self.state.jwt.access,
+                        "refreshToken": self.state.jwt.refresh
                     }),
                     method: "POST"
                 }).then(data => data.json())
@@ -142,7 +142,8 @@ class Login extends Component {
                                             },
                                             "deployedBytecode": files[file][contract].evm.deployedBytecode.object,
                                             "deployedSourceMap": files[file][contract].evm.deployedBytecode.sourceMap,
-                                            "source": value[2].sources[file].content
+                                            "source": value[2].sources[file].content,
+                                            "remixPath": file
                                         });
                                     }
                                 }
@@ -192,7 +193,7 @@ class Login extends Component {
                                                     return issue;
                                                 });
                                                 const results = issuesObject.convertMythXReport2EsIssue(report);
-                                                self.setState({results: results});
+                                                self.setState({results: [results, bytecodes[bytecode].remixPath]});
                                                 self.setState({loading: "Loaded"});
                                             })
                                             .catch(error => console.log(error));
@@ -216,8 +217,15 @@ class Login extends Component {
         if(this.state.buttonValue === "Activate"){
             this.setState({buttonValue: "Deactivate"});
             this.setState({results: ""});
+            this.setState({loading: "Not loading"});
         } else {
             this.setState({buttonValue: "Activate"});
+            window.parent.postMessage(JSON.stringify({
+                action: "request",
+                key: "editor",
+                type: "discardHighlight",
+                value: []
+            }), "*");
         }
       }
         
