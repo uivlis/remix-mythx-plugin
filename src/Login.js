@@ -235,7 +235,7 @@ class Login extends Component {
         let results;
 
         if (this.state.loading === "Loading"){
-            results = <div class="mdl-spinner mdl-js-spinner is-active"></div>;
+            results = <div className="mdl-spinner mdl-js-spinner is-active"></div>;
         } else if (this.state.loading === "Loaded") {
             results = <Results results={this.state.results} />;
         } else {
@@ -246,7 +246,7 @@ class Login extends Component {
 
         if (this.state.loginState === "Login successful"){
             login = <div id="activateSection">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                    <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
                         type="button" onClick={this.activate} 
                         id="activate">{this.state.buttonValue}
                     </button>
@@ -262,23 +262,23 @@ class Login extends Component {
       return (
 
         <div>
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--6-col">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <label class="mdl-textfield__label" for="ethAddress">Ethereum address</label>
-                        <input class="mdl-textfield__input" type="text" id="ethAddress" value={this.state.ethAddress} onChange={this.handleAddressChange} />
+            <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--6-col">
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label className="mdl-textfield__label" for="ethAddress">Ethereum address</label>
+                        <input className="mdl-textfield__input" type="text" id="ethAddress" value={this.state.ethAddress} onChange={this.handleAddressChange} />
                     </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <label class="mdl-textfield__label" for="password">Password</label>
-                        <input class="mdl-textfield__input" type="password" id="password" value={this.state.password} onChange={this.handlePasswordChange} />
+                    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label className="mdl-textfield__label" for="password">Password</label>
+                        <input className="mdl-textfield__input" type="password" id="password" value={this.state.password} onChange={this.handlePasswordChange} />
                     </div>
                 </div>
-                <div class="mdl-cell mdl-cell--4-col">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.state.loginState === "Logout successful" ? this.login : this.logout} id="login">{this.state.loginState === "Logout successful" ? "Log In" : "Log Out"}</button>
+                <div className="mdl-cell mdl-cell--4-col">
+                    <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.state.loginState === "Logout successful" ? this.login : this.logout} id="login">{this.state.loginState === "Logout successful" ? "Log In" : "Log Out"}</button>
                 </div>
             </div>
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col">
+            <div className="mdl-grid">
+                <div className="mdl-cell mdl-cell--12-col">
                     {login}
                 </div>
             </div>

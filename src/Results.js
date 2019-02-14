@@ -48,7 +48,7 @@ class Results extends Component {
             rows.push(
                 <div key={message}  style={{fontSize: "12px"}}>
                     <p>{this.props.results[0].messages[message].message}</p>
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style={{fontSize: "12px"}} onClick={() => {this.highlight(message)}}>Lines {this.props.results[0].messages[message].line + " "} 
+                    <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style={{fontSize: "12px"}} onClick={() => {this.highlight(message)}}>Lines {this.props.results[0].messages[message].line + " "} 
                         - {this.props.results[0].messages[message].endLine}, 
                         Cols {this.props.results[0].messages[message].column + " "} 
                         -  {this.props.results[0].messages[message].endCol}
