@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { MythXIssues } from 'truffle-security/lib/issues2eslint';
+import Results from './Results.js';
 
 class Login extends Component {
 
@@ -12,7 +13,8 @@ class Login extends Component {
             refresh: null,
             loginState: "",
             buttonValue: "Activate",
-            results: {}
+            results: {},
+            loading: "Not loading"
         };
     
         this.login = this.login.bind(this);
@@ -61,20 +63,22 @@ class Login extends Component {
       }
 
       login() {
+          this.setState({loading: "Not loading"});
         if (this.state.loginState !== "Login successful"){
             this.getJwt();
+            const self = this;
             const refresh = setInterval(function(){
                 fetch("https://api.mythx.io/v1/auth/refresh", {
                     headers: {
                         "content-type": "application/json"
                     },
                     body: JSON.stringify({
-                        "accessToken": this.state.jwt.access,
-                        "refreshToken": this.state.jwt.refresh
+                        "accessToken": self.jwt.access,
+                        "refreshToken": self.jwt.refresh
                     }),
                     method: "POST"
                 }).then(data => data.json())
-                .then(data => this.setState({jwt: data}))
+                .then(data => self.setState({jwt: data}))
                 .catch(error => console.log(error));
             }, /*each 10 minutes, the jwt tokens expire*/ 600000); 
             this.setState({refresh: refresh});
@@ -119,6 +123,7 @@ class Login extends Component {
             const { action, key, type, value } = JSON.parse(event.data);
             if (action === 'notification' && key === 'compiler') {
                 if (type === 'compilationFinished') {
+                    this.setState({loading: "Loading"});
                     this.setState({results: ""});
                     const success = value[0];
                     if (success) {
@@ -188,6 +193,7 @@ class Login extends Component {
                                                 });
                                                 const results = issuesObject.convertMythXReport2EsIssue(report);
                                                 self.setState({results: results});
+                                                self.setState({loading: "Loaded"});
                                             })
                                             .catch(error => console.log(error));
                                             clearInterval(poll);
@@ -217,6 +223,17 @@ class Login extends Component {
         
 
     render() {
+
+        let results;
+
+        if (this.state.loading === "Loading"){
+            results = <p>{"Loading..."}</p>;
+        } else if (this.state.loading === "Loaded") {
+            results = <Results results={this.state.results} />;
+        } else {
+            results = <p></p>;
+        }
+
       return (
         <div className="container">
             <div className="row">
@@ -243,7 +260,9 @@ class Login extends Component {
                 this.state.loginState === "Login successful" ? 
                     <div className="row" id="activateSection">
                         <button type="button" onClick={this.activate} id="activate">{this.state.buttonValue}</button>
-                        <div id="activateRes">{JSON.stringify(this.state.results)}</div>
+                        <div id="activateRes">
+                            {results}
+                        </div>
                     </div> 
                     : 
                     <p></p> 
