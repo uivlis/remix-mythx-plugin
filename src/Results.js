@@ -15,7 +15,7 @@ class Results extends Component {
             key: "editor",
             type: "discardHighlight",
             value: []
-        }), "https://remix-mythx-plugin.herokuapp.com/");
+        }), "*");
 
         let message = {
             action: "request",
@@ -37,7 +37,7 @@ class Results extends Component {
                 "#e0a0a0"
             ]
         };
-        window.parent.postMessage(JSON.stringify(message), "https://remix-mythx-plugin.herokuapp.com/");
+        window.parent.postMessage(JSON.stringify(message), "*");
     }
 
     render(){
