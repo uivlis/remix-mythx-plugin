@@ -1,0 +1,17 @@
+html {
+    font-family: 'Lato', sans-serif;
+    background-color: floralwhite;
+    color: navy;
+}
+
+.demo-card-wide.mdl-card {
+    width: 512px;
+  }
+.demo-card-wide > .mdl-card__title {
+    color: rgb(255, 255, 255);
+    height: 176px;
+    background: rgb(75, 76, 180);
+}
+.demo-card-wide > .mdl-card__menu {
+    color: #fff;
+}

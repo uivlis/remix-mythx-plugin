@@ -46,12 +46,12 @@ class Results extends Component {
 
         for (let message in this.props.results[0].messages) {
             rows.push(
-                <div key={message}>
-                    <p><strong>{this.props.results[0].messages[message].message}</strong></p>
-                    <button style={{"backgroundColor": "#f0f0f0"}} onClick={() => {this.highlight(message)}}>Lines {this.props.results[0].messages[message].line + " "} 
-                        to {this.props.results[0].messages[message].endLine}, 
+                <div key={message}  style={{fontSize: "12px"}}>
+                    <p>{this.props.results[0].messages[message].message}</p>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style={{fontSize: "12px"}} onClick={() => {this.highlight(message)}}>Lines {this.props.results[0].messages[message].line + " "} 
+                        - {this.props.results[0].messages[message].endLine}, 
                         Cols {this.props.results[0].messages[message].column + " "} 
-                        to  {this.props.results[0].messages[message].endCol}
+                        -  {this.props.results[0].messages[message].endCol}
                     </button>
                     <p>Severity: {this.props.results[0].messages[message].mythXseverity}</p>
                 </div>
@@ -59,9 +59,9 @@ class Results extends Component {
         }
 
         return(
-            <div>
-                <p>Errors: {this.props.results[0].errorCount}. Fixable Errors: {this.props.results[0].fixableErrorCount}</p>
-                <p>Warnings: {this.props.results[0].warningCount}. Fixable Warnings: {this.props.results[0].fixableWarningCount}</p>
+            <div style={{fontSize: "15px"}}>
+                <p>Errors: <span style={{color: "crimson"}}>{this.props.results[0].errorCount}</span>. Fixable Errors: {this.props.results[0].fixableErrorCount}</p>
+                <p>Warnings: <span style={{color: "#86651e"}}>{this.props.results[0].warningCount}</span>. Fixable Warnings: {this.props.results[0].fixableWarningCount}</p>
                 {rows}
             </div>
         );

@@ -11,13 +11,14 @@ class Login extends Component {
             password: "",
             jwt: {},
             refresh: null,
-            loginState: "",
+            loginState: "Logout successful",
             buttonValue: "Activate",
             results: {},
             loading: "Not loading"
         };
     
         this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
         this.activate = this.activate.bind(this);
         this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -63,47 +64,46 @@ class Login extends Component {
       }
 
       login() {
-          this.setState({loading: "Not loading"});
-        if (this.state.loginState !== "Login successful"){
-            this.getJwt();
-            const self = this;
-            const refresh = setInterval(function(){
-                fetch("https://api.mythx.io/v1/auth/refresh", {
-                    headers: {
-                        "content-type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        "accessToken": self.state.jwt.access,
-                        "refreshToken": self.state.jwt.refresh
-                    }),
-                    method: "POST"
-                }).then(data => data.json())
-                .then(data => self.setState({jwt: data}))
-                .catch(error => console.log(error));
-            }, /*each 10 minutes, the jwt tokens expire*/ 600000); 
-            this.setState({refresh: refresh});
-        } else {
-            clearInterval(this.state.refresh);
-            fetch("https://api.mythx.io/v1/auth/logout", {
-                    headers: {
-                        "content-type": "application/json",
-                        "Authorization":"Bearer " + this.state.jwt.access
-                    },
-                    body: JSON.stringify ({
-                        "global": false
-                    }),
-                    method: "POST"
-                }).then(data => data.json())
-                .then(data => {
-                    this.setState({
-                        loginState: "Logout succesful",
-                        buttonValue: "Activate"
-                    });
-                    this.getJwt();
-                })
-                .catch(error => console.log(error));
-        }
+        this.setState({loading: "Not loading"});
+        this.getJwt();
+        const self = this;
+        const refresh = setInterval(function(){
+            fetch("https://api.mythx.io/v1/auth/refresh", {
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    "accessToken": self.state.jwt.access,
+                    "refreshToken": self.state.jwt.refresh
+                }),
+                method: "POST"
+            }).then(data => data.json())
+            .then(data => self.setState({jwt: data}))
+            .catch(error => console.log(error));
+        }, /*each 10 minutes, the jwt tokens expire*/ 600000); 
+        this.setState({refresh: refresh});
       }
+
+      logout(){
+        clearInterval(this.state.refresh);
+        fetch("https://api.mythx.io/v1/auth/logout", {
+                headers: {
+                    "content-type": "application/json",
+                    "Authorization":"Bearer " + this.state.jwt.access
+                },
+                body: JSON.stringify ({
+                    "global": false
+                }),
+                method: "POST"
+            }).then(data => data.json())
+            .then(data => {
+                this.setState({
+                    loginState: "Logout successful",
+                    buttonValue: "Activate"
+                });
+            })
+            .catch(error => console.log(error));
+        }
 
       componentDidMount() {
         window.addEventListener('message', this.passMessageToMythX, false);
@@ -235,7 +235,7 @@ class Login extends Component {
         let results;
 
         if (this.state.loading === "Loading"){
-            results = <p>{"Loading..."}</p>;
+            results = <div class="mdl-spinner mdl-js-spinner is-active"></div>;
         } else if (this.state.loading === "Loaded") {
             results = <Results results={this.state.results} />;
         } else {
@@ -245,39 +245,43 @@ class Login extends Component {
         let login;
 
         if (this.state.loginState === "Login successful"){
-            login = <div className="row" id="activateSection">
-                        <button type="button" onClick={this.activate} id="activate">{this.state.buttonValue}</button>
-                        <div id="activateRes">
-                            {results}
-                        </div>
+            login = <div id="activateSection">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
+                        type="button" onClick={this.activate} 
+                        id="activate">{this.state.buttonValue}
+                    </button>
+
+                    <div id="activateRes">
+                        {results}
+                    </div>
                     </div> 
         } else {
             login = <p></p>;
         }
 
       return (
-        <div className="container">
-            <div className="row">
-                <div className="col-xs-3">
-                    <label>Ethereum address</label>
+
+        <div>
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--6-col">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label class="mdl-textfield__label" for="ethAddress">Ethereum address</label>
+                        <input class="mdl-textfield__input" type="text" id="ethAddress" value={this.state.ethAddress} onChange={this.handleAddressChange} />
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label class="mdl-textfield__label" for="password">Password</label>
+                        <input class="mdl-textfield__input" type="password" id="password" value={this.state.password} onChange={this.handlePasswordChange} />
+                    </div>
                 </div>
-                <div className="col-xs-3">
-                    <input id="ethAddress" value={this.state.ethAddress} onChange={this.handleAddressChange} />
+                <div class="mdl-cell mdl-cell--4-col">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onClick={this.state.loginState === "Logout successful" ? this.login : this.logout} id="login">{this.state.loginState === "Logout successful" ? "Log In" : "Log Out"}</button>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-xs-3">
-                    <label>Password</label>
-                </div>
-                <div className="col-xs-3">
-                    <input type="password" id="password" value={this.state.password} onChange={this.handlePasswordChange} />
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                    {login}
                 </div>
             </div>
-            <div className="row">
-                <button type="button" onClick={this.login} id="login">LogIn</button>
-                <label id="loginRes">{this.state.loginState}</label>
-            </div>
-            {login}
         </div>
       );
     }
