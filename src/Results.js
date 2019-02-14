@@ -10,8 +10,6 @@ class Results extends Component {
 
         var rows = [];
 
-        console.log(this.props.results);
-
         for (let message in this.props.results.messages) {
             rows.push(
                 <div key={message}>
@@ -28,6 +26,8 @@ class Results extends Component {
 
         return(
             <div>
+                <p>Errors: {this.props.results.errorCount}. Fixable Errors: {this.props.results.fixableErrorCount}</p>
+                <p>Warnings: {this.props.results.warningCount}. Fixable Warnings: {this.props.results.fixableWarningCount}</p>
                 {rows}
             </div>
         );
