@@ -159,7 +159,15 @@ class Login extends Component {
                                     "data": {
                                         "contractName": bytecodes[bytecode].contractName,
                                         "analysisMode": "quick",
-                                        "bytecode": "0x" + bytecodes[bytecode].bytecode
+                                        "bytecode": bytecodes[bytecode].bytecode,
+                                        "sources": {
+                                            [bytecodes[bytecode].remixPath]: {
+                                                "source": bytecodes[bytecode].source
+                                            }
+                                        },
+                                        "sourceList": [
+                                            bytecodes[bytecode].remixPath
+                                        ]
                                     }
                                 }),
                                 method: "POST"
